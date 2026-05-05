@@ -256,7 +256,7 @@
  enable_lak_vars = 18*.true., ! Mask to eventually disable variables LAK
  enable_opt_vars = 20*.true., ! Mask to eventually disable variables OPT
  enable_che_vars = 26*.true., ! Mask to eventually disable variables CHE
- dirout  = './output',        ! Path where all output will be placed
+ dirout  = 'output',        ! Path where all output will be placed
  lsync   = .false.,           ! If sync of output files at every timestep is
                               ! requested. Note, it has a performance impact.
                               ! Enabled by default if debug_level > 2
