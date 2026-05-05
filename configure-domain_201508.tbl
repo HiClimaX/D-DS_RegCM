@@ -1,0 +1,89 @@
+domain          params            value
+d01             domname           'd01'
+d01             jx                61
+d01             iy                61
+d01             kz                18
+d01             ds                50.0
+d01             dt                150.0
+d01             nspgx             8
+d01             nspgd             8
+d01             high_nudge        9.0D0
+d01             medium_nudge      6.0D0
+d01             low_nudge         3.0D0
+d01             dirout            'regcm5-out/d01'
+
+d02             domname           'd02'
+d02             jx                101
+d02             iy                101
+d02             kz                23
+d02             ds                10.0
+d02             dt                100.0
+d02             nspgx             12
+d02             nspgd             12
+d02             high_nudge        9.0D0
+d02             medium_nudge      6.0D0
+d02             low_nudge         3.0D0
+d02             dirout            'regcm5-out/d02'
+d02             coarse_outdir     'regcm5-out/d01'
+d02             coarse_domname    'd01'
+
+d03             domname           'd03'
+d03             jx                121
+d03             iy                121
+d03             kz                41
+d03             ds                2.0
+d03             dt                30.0
+d03             nspgx             24
+d03             nspgd             24
+d03             high_nudge        9.0D0
+d03             medium_nudge      6.0D0
+d03             low_nudge         3.0D0
+d03             dirout            'regcm5-out/d03'
+d03             coarse_outdir     'regcm5-out/d02'
+d03             coarse_domname    'd02'
+
+d01             ssttyp            'ERA5D'
+d01             dattyp            'ERA5'
+d01             icup_lnd          5
+d01             icup_ocn          4
+d01             ipptls            1
+d01             lakedpth          false.
+d01             lakemod           0
+d02,d03         ssttyp            'FNEST'
+d02,d03         dattyp            'FNEST'
+d02,d03         icup_lnd          0
+d02,d03         icup_ocn          0
+d02,d03         ipptls            2
+d02,d03         lakedpth          .true.
+d02,d03         lakemod           1
+
+d01,d02,d03     idynamic          3
+d01,d02,d03     iproj             'LAMCON'
+d01,d02,d03     clat              35.8
+d01,d02,d03     clon              139.6
+d01,d02,d03     truelatl          30.0
+d01,d02,d03     truelath          40.0
+d01,d02,d03     dirter            'regcm5-icbc/'
+d01,d02,d03     inpter            'globdata/'
+
+d01,d02,d03     ifsave            .false.
+d01,d02,d03     ifsub             .false.
+d01,d02,d03     iflak             .false.
+d01,d02,d03     ifchem            .false.
+
+
+d01,d02,d03     gdate1            2015060100
+d01,d02,d03     gdate2            2015090100
+d01,d02,d03     calendar          'gregorian'
+d01,d02,d03     dirglob           'regcm5-icbc/'
+d01,d02,d03     inpglob           'globdata/'
+
+d01,d02,d03     ifrest            .false.
+d01,d02,d03     mdate0            2015060100
+d01,d02,d03     mdate1            2015060100
+d01,d02,d03     mdate2            2015090100
+
+
+
+
+
