@@ -1,57 +1,98 @@
+# RegCM5 Simulation Workflow
 
-# Run 'init.sh' to create folders as our recommendation
+This repository contains automation scripts and instructions for compiling and operating the Regional Climate Model version 5 (RegCM5).
 
-# The required libraries can be found in 'load-env.sh'
-  - Here we use intel compiler with mvapich2, but the native intel should work
-  - If users use other compiler, such as GNU, file 'load-env.sh' HAVE to be modified accordingly
+---
 
-# Compiling RegCM5
-  - User can use our current version of RegCM5 in 'model/5.0.0.tar.gz'
-  - Otherwise, the latest version can be downloaded the on github
-  - To compile the model:
-    1. cd model
-    2. tar zxvf 5.0.0.tar.gz
-    3. cd RegCM-5.0.0 # or any other folder name extracted from the 5.0.0.tar.gz
-    4. ./bootstrap.sh
-    5. ./configure --enable-clm45  # always use CLM45 for land-surface model (BATS is too old and simple)
-    6. make -j 16  # higher number ~ faster process
-    7. make install
+## 📋 Prerequisites & Environment
 
-  - sometimes 'make -j 16' may be interupted, just run it again.
-  - If the error(s) still not solved, double check againt he configure step (see more in config.log)
-  - the executable files, including the model, will be stored in 'bin'
+Before starting, initialize the project directory structure and load the required compiler modules.
 
-------------------------------------
-# Downloading dataset
-To be describe later
+1.  **Initialize Folders:**
+    ```bash
+    bash init.sh
+    ```
+2.  **Load Environment:**
+    The required libraries are defined in `load-env.sh`.
+    *   The default configuration uses the **Intel Compiler with MVAPICH2**.
+    *   **Note:** If using **GNU** or other compilers, you **must** modify `load-env.sh` accordingly before proceeding.
 
-------------------------------------
-Operating RegCM5 system
+---
 
-# 1. Read the template namelist (progs/README.namelist) carefully
-  - List out parameters that should be change in your similation
+## 🛠️ Installation & Compilation
 
-# 2. Create/Edit file 'configure-domain.tbl'
-  - The file should be in the following structure
-  ------------------------------------
-  |  domain      params      value   |  <- this is header, the later program won't read first line  
-  |  d01         domname     'd01'   |  <- a parameter of domain 1
-  |  d02         domname     'd02'   |  <- a parameter of domain 2
-  |  d01,d02     idynamic    3       |  <- a SHARED parameter of domain 1 & 2
-  ------------------------------------
+### 1. Obtain the Source Code
+You can use the version provided in this repository or download the latest from GitHub.
+*   **Local Version:** `model/5.0.0.tar.gz`
+*   **GitHub:** [RegCM GitHub Repository](https://github.com/ICTP/RegCM)
 
-# 3. Edit and run 'scr.1.generate_namelists.sh' to create namelist files
-  - Pay attention to: TEMPLATE, ODIR, TABLE, EXPNM
+### 2. Build the Model
+Run the following sequence to compile the executable:
 
-# 4. Run 'scr.2.1.preProc.sh' to create pre-processing files (domain, land-surface, sst, icbc)
-  - The pre-processing should run on a single processor
-  - There is an option for parallelly run, but not stable and depending on the system setting
+```bash
+cd model
+tar zxvf 5.0.0.tar.gz
+cd RegCM-5.0.0
+./bootstrap.sh
+./configure --enable-clm45  # CLM45 is recommended; BATS is deprecated.
+make -j 16                  # Parallel build
+make install
+```
 
-# 5. Run 'scr.2.2.runRegCM.sh' to perform the simulation
-  - Run the program parallelly using 'mpirun'
+[!TIP]
 
-# NOTEs: step 4&5 is highly depend on the computer system.
-  - Read 'scr.2.0.submit-HILO.sh' for your reference of a SLURM system
+* If `make -j 16` is interrupted, simply run the command again.
+* If errors persist, check `config.log` for missing dependencies.
+* Compiled executables will be stored in the `/bin` directory.
 
+## 📂 Downloading Datasets
+*(Section to be updated with specific data source links and scripts)*
 
+## 🚀 Operating RegCM5
+Follow these steps to configure and run your simulation.
 
+### Step 1: Analyze the Namelist Template
+Carefully read `progs/README.namelist`. This file contains the documentation for all parameters. Identify which variables need modification for your specific experiment.
+
+### Step 2: Configure Domain Parameters
+Edit `configure-domain.tbl`. This table allows you to manage multiple domains and shared parameters easily.
+
+Format Example:
+| domain | params | value | Note |
+| :--- | :--- | :--- | :--- |
+| d01 | domname | 'd01' | Specific to Domain 1 |
+| d02 | domname | 'd02' | Specific to Domain 2 |
+| d01,d02 | idynamic | 3 | Shared by both domains |
+
+### Step 3: Generate Namelists
+Run the generation script to create `nml.d0X.in` files based on your table:
+
+```bash
+bash scr.1.generate_namelists.sh
+```
+* **Check variables inside the script**: Ensure TEMPLATE, ODIR, TABLE, and EXPNM are correctly set.
+
+### Step 4: Pre-Processing
+Generate domain topography, land-surface parameters, SST, and ICBC files:
+
+```bash
+bash scr.2.1.preProc.sh
+```
+
+[!WARNING]
+Pre-processing should generally be run on a **single processor**. While parallel options exist, they may be unstable depending on your system architecture.
+
+### Step 5: Execute Simulation
+Perform the model run using MPI:
+
+```
+bash scr.2.2.runRegCM.sh
+```
+
+## 🖥️ System-Specific Notes (HPC/SLURM)
+Steps 4 and 5 are highly dependent on your local cluster environment.
+
+* If your system uses the **SLURM** workload manager, refer to `scr.2.0.submit-HILO.sh` as a template for your submission scripts.
+* Ensure mpirun or srun paths match your environment.
+
+# EOF
