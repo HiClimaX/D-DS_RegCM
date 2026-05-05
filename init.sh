@@ -1,7 +1,9 @@
 #!/bin/bash
 
+# link the compiled files to here for convenience
+ln -sf model/RegCM-5.0.0/bin regcm5-bin
 
-
-mkdir -p globdata logs regcm5-bin regcm5-icbc regcm5-nml regcm5-out
+# create some folders
+mkdir -p globdata logs regcm5-icbc regcm5-nml regcm5-out
 
 
